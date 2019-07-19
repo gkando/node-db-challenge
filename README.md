@@ -33,9 +33,27 @@ This will be akin to the Web API that you built in the last sprint, only this ti
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. Explain the difference between `Relational Databases` and `SQL`.
+
+    SQL is the language used to speak to relational databases. 
+
 1. Why do tables need a `primary key`?
+
+    A primary key is a unique identifier for each record in a database.
+    When a database is queried the primary key identifies itself as the preferred way to identify that specific record.  The database will an index of primary keys which will make complex queries and joins execute faster.
+
 1. What is the name given to a table column that references the primary key on another table.
+
+    Migrant Key
+
+    Undocumented Key
+
+    Non-Domestic Primary Key
+
+    Foreign Key
+
 1. What do we need in order to have a _many to many_ relationship between two tables.
+
+     An intermediary table that holds foreign keys that reference the primary key on the related tables.
 
 ## Project Set Up
 
@@ -46,13 +64,13 @@ Follow these steps for starting your project.
 - [x] Clone your OWN version of the repository (Not Lambda's by mistake!).
 - [x] Create a new branch: git checkout -b `<firstName-lastName>`.
 - [x] Implement the project on your newly created `<firstName-lastName>` branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [x] Push commits: git push origin `<firstName-lastName>`.
 
 Follow these steps for completing your project.
 
-- [ ] Submit a Pull-Request to merge `<firstName-lastName>` Branch into master (student's Repository). **Please don't merge your own pull request**
-- [ ] Add your project manager as a reviewer on the pull-request
-- [ ] Your project manager will count the project as complete by merging the branch back into master.
+- [x] Submit a Pull-Request to merge `<firstName-lastName>` Branch into master (student's Repository). **Please don't merge your own pull request**
+- [x] Add your project manager as a reviewer on the pull-request
+- [x] Your project manager will count the project as complete by merging the branch back into master.
 
 ## Minimum Viable Product
 
@@ -66,7 +84,7 @@ Follow these steps for completing your project.
 - [x] An `action` belongs to only one project. An action has:
   - [x] a unique id.
   - [x] a description of what needs to be done.
-  - [ ] a notes column to add additional information.
+  - [x] a notes column to add additional information.
   - [x] a flag that indicates if the action has been completed.
 
 Feel free to name the tables and fields anything you want. **Add relationships** as you see fit.
@@ -77,7 +95,7 @@ Feel free to name the tables and fields anything you want. **Add relationships**
 - [x] Build the API with the following endpoints:
 
   - [x] POST for adding projects.
-  - [ ] POST for adding actions.
+  - [x] POST for adding actions.
   - [x] GET for retrieving a `project` by its `id` that returns an object with the following structure:
 
     ```js

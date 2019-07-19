@@ -4,6 +4,35 @@ const projects = require('./project-model');
 
 const router = express.Router();
 
+//C
+router.post('/', async (req, res) => {
+  const projectData = req.body;
+  try {
+    const project = await projects.add(projectData);
+    res.status(201).json(project);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create new project' });
+  }
+});
+
+router.post('/:id/actions', async (req, res) => {
+  const actionData = req.body;
+  const { id } = req.params; 
+  try {
+    const project = await projects.findById(id);
+    if (project) {
+      actionData.project_id = id;
+      const action = await projects.addAction(actionData);
+      res.status(201).json(action);
+    } else {
+      res.status(404).json({ message: 'Could not find project with given id.' })
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create new action' });
+  }
+});
+
+//R
 router.get('/', async (req, res) => {
   try {
     const project = await projects.find();
@@ -16,7 +45,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const project = await projects.findById(id);
     if (project) {
@@ -31,56 +59,30 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/actions', async (req, res) => {
   const { id } = req.params;
-
   try {
-    const actions = await projects.getActions(id);
-
-    if (actions.length) {
-      res.json(actions);
+    const project = await projects.findById(id);
+    if (project) {
+      const actions = await projects.getActions(id);
+      if (actions.length) {
+        project.actions = actions;
+        res.status(201).json(project);
+      } else {
+        res.status(404).json({ message: 'Could not find actions for given project' })
+      }
     } else {
-      res.status(404).json({ message: 'Could not find actions for given project' })
+      res.status(404).json({ message: 'Could not find project with given id.' })
     }
   } catch (err) {
     res.status(500).json({ message: 'Failed to get actions' });
   }
 });
 
-router.post('/', async (req, res) => {
-  const projectData = req.body;
-
-  try {
-    const project = await projects.add(projectData);
-    res.status(201).json(project);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to create new project' });
-  }
-});
-
-router.post('/:id/actions', async (req, res) => {
-  const actionData = req.body;
-  const { id } = req.params; 
-
-  try {
-    const project = await projects.findById(id);
-
-    if (project) {
-      const action = await projects.addAction(actionData, id);
-      res.status(201).json(action);
-    } else {
-      res.status(404).json({ message: 'Could not find project with given id.' })
-    }
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to create new action' });
-  }
-});
-
+//U
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
-
   try {
     const project = await projects.findById(id);
-
     if (project) {
       const updatedProject = await projects.update(changes, id);
       res.json(updatedProject);
@@ -94,10 +96,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const deleted = await projects.remove(id);
-
     if (deleted) {
       res.json({ removed: deleted });
     } else {
